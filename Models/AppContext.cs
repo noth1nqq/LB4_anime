@@ -26,7 +26,6 @@ public partial class AppContext : DbContext
 
     //переопределение методов
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=animeTitles;Username=postgres;Password=1111");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,17 +50,17 @@ public partial class AppContext : DbContext
             entity.Property(e => e.TitleName).HasColumnName("titleName");
             entity.Property(e => e.YearOfRelease).HasColumnName("yearOfRelease");
 
-            entity.HasOne(d => d.IdAnimeTypeNavigation).WithMany(p => p.AnimeTitles)
+            entity.HasOne(d => d.AnimeType).WithMany(p => p.AnimeTitles)
                 .HasForeignKey(d => d.IdAnimeType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_titles_types");
 
-            entity.HasOne(d => d.IdGenreNavigation).WithMany(p => p.AnimeTitles)
+            entity.HasOne(d => d.Genre).WithMany(p => p.AnimeTitles)
                 .HasForeignKey(d => d.IdGenre)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_titles_genres");
 
-            entity.HasOne(d => d.IdModeratorNavigation).WithMany(p => p.AnimeTitles)
+            entity.HasOne(d => d.User).WithMany(p => p.AnimeTitles)
                 .HasForeignKey(d => d.IdModerator)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_titles_users");
